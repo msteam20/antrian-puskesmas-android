@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_proses"
+        android:icon="@drawable/ic_proses"
+        android:title="Antrian" />
+
+    <item
+        android:id="@+id/navigation_pasien"
+        android:icon="@drawable/pasiens"
+        android:title="Pasien"/>
+    <item
+        android:id="@+id/navigation_akun"
+        android:icon="@drawable/ic_user"
+        android:title="Akun" />
+
+</menu>

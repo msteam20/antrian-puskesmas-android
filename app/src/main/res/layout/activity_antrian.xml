@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+    <puskesmas.antrian.com.antrianpuskesmas.components.SquareImageView
+        android:id="@+id/icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_proses"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/pasien"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Dhimas Atha Abdillah"
+        app:layout_constraintStart_toEndOf="@+id/icon"/>
+    <TextView
+        android:id="@+id/poli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="POLI ANAK"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/pasien"
+        app:layout_constraintStart_toEndOf="@+id/icon"/>
+    <TextView
+        android:id="@+id/waktu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Senin, 14 Ferbruari 2018"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/poli"
+        app:layout_constraintStart_toEndOf="@+id/icon"/>
+    <TextView
+        android:id="@+id/lbl_no_antrian_anda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:text="Nomor Antrian anda"
+        app:layout_constraintTop_toBottomOf="@+id/garis"/>
+    <View
+        android:id="@+id/garis"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/waktu"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:padding="5dp"
+        android:background="#d3d3d3"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/lbl_no_antrian_anda"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_no_antrian_anda">
+        <TextView
+            android:id="@+id/no_urut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="80sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutDilayani"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintWidth_percent=".49"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+        <TextView
+            android:id="@+id/labelDilayani"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="Nomor Dilayani"/>
+        <TextView
+            android:id="@+id/dilayani"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelDilayani"
+            android:text="0"
+            android:textColor="#000"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textSize="40sp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layoutSisa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintWidth_percent=".49"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintRight_toRightOf="parent">
+        <TextView
+            android:id="@+id/labelSisa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="Sisa Antrian"/>
+        <TextView
+            android:id="@+id/sisa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelSisa"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="40sp"/>
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Segarkan"
+        android:background="@color/colorPrimary"
+        android:textColor="#fff"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/layoutSisa"/>
+
+</android.support.constraint.ConstraintLayout>
