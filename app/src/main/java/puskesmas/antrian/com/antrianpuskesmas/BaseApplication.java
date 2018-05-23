@@ -1,6 +1,7 @@
 package puskesmas.antrian.com.antrianpuskesmas;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import com.androidnetworking.AndroidNetworking;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -14,12 +15,14 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class BaseApplication extends Application {
+    public static SharedPreferences sharedPreferences;
     @Override
     public void onCreate() {
         super.onCreate();
 
+        sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
 
-        // inisialisasi Okttp untuk networking
+        // inisialisasi Okttp untuk networking request Api ke server
         OkHttpClient okHttpClient = null;
         if (BuildConfig.DEBUG) {
             okHttpClient = new OkHttpClient().newBuilder()
@@ -48,7 +51,7 @@ public class BaseApplication extends Application {
                     .build();
         }
 
-        // Set okhttp pada networking
+        // Set okhttp pada networking request Api ke server
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
 
         // Set enable logging jika mode debug

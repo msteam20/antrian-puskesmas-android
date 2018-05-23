@@ -1,6 +1,7 @@
 package puskesmas.antrian.com.antrianpuskesmas.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import okhttp3.internal.http2.Header;
+import puskesmas.antrian.com.antrianpuskesmas.Activities.AntrianActivity;
 import puskesmas.antrian.com.antrianpuskesmas.R;
 import puskesmas.antrian.com.antrianpuskesmas.models.Antrian;
 
@@ -40,11 +42,19 @@ public class AntrianRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (holder instanceof HeaderTitleViewHolder){
             ((HeaderTitleViewHolder) holder).textView.setText((String) list.get(position));
         } else if(holder instanceof AntrianViewHolder) {
-            Antrian antrian = (Antrian) list.get(position);
+            final Antrian antrian = (Antrian) list.get(position);
             ((AntrianViewHolder) holder).pasien.setText(antrian.pasien.nama);
             ((AntrianViewHolder) holder).poli.setText(antrian.poli.nama);
             ((AntrianViewHolder) holder).no_antrian.setText(antrian.no_antrian);
             ((AntrianViewHolder) holder).w_antrian.setText(antrian.w_antrian);
+            ((AntrianViewHolder) holder).view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, AntrianActivity.class);
+                    intent.putExtra("id", antrian.id);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -71,13 +81,14 @@ public class AntrianRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView poli;
         TextView no_antrian;
         TextView w_antrian;
-
+        View view;
         public AntrianViewHolder(View itemView) {
             super(itemView);
             pasien = itemView.findViewById(R.id.pasien);
             poli = itemView.findViewById(R.id.poli);
             no_antrian = itemView.findViewById(R.id.no_urut);
             w_antrian = itemView.findViewById(R.id.w_antrian);
+            view = itemView;
         }
     }
 }

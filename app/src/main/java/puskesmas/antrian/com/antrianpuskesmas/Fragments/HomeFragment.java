@@ -60,6 +60,12 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
         loadData();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadPasien();
+    }
+
     private void setRecyclerView (List<Poli> poli){
         adapter = new PoliRecyclerAdapter(getContext(), poli, this);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -85,7 +91,9 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
                     Log.e("error", anError.getErrorBody());
                 }
             });
+    }
 
+    void loadPasien(){
         // Load data pasien
         AndroidNetworking.get(Const.PASIEN)
                 .setTag("Mendapatkan List Pasien")
@@ -109,7 +117,6 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
 
     @Override
     public void onClick(Poli poli) {
-        // Todo Request Antrian
         showDialogPilihPasien(poli);
     }
 

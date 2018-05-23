@@ -14,9 +14,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Rubah ini sesuai dengan url server api
+            buildConfigField "String", "BASE_URL", "\"http://2c75ed51.ngrok.io/api/\""
         }
         debug {
-            buildConfigField "String", "BASE_URL", "\"http://5d7996b8.ngrok.io/api/\""
+            // Rubah ini sesuai dengan url server api
+            buildConfigField "String", "BASE_URL", "\"http://2c75ed51.ngrok.io/api/\""
         }
     }
 }

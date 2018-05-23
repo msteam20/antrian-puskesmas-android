@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -76,7 +77,16 @@ public class AntrianActivity extends AppCompatActivity {
 
         noUrut.setText(antrian.no_antrian);
         poli.setText(antrian.poli.nama);
+        pasien.setText(antrian.pasien.nama);
+        dilayani.setText(antrian.in_progress ? String.valueOf(antrian.dilayani) : "SELESAI");
+        sisa.setText(antrian.in_progress ? String.valueOf(Integer.parseInt(antrian.no_antrian) - antrian.dilayani) : "SELESAI");
         Glide.with(this).load(antrian.poli.icon).into(icon);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadData(id);
+            }
+        });
     }
 
 

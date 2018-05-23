@@ -31,6 +31,8 @@ import puskesmas.antrian.com.antrianpuskesmas.R;
 import puskesmas.antrian.com.antrianpuskesmas.etc.Const;
 import puskesmas.antrian.com.antrianpuskesmas.models.Pasien;
 
+import static android.app.Activity.RESULT_OK;
+
 public class PasienFragment extends Fragment {
     RecyclerView recyclerView;
     FloatingActionButton fab;
@@ -71,9 +73,18 @@ public class PasienFragment extends Fragment {
         loadData();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 302 && resultCode == RESULT_OK){
+            loadData();
+        }
+    }
+
     private void loadData() {
+        pasiens.clear();
         AndroidNetworking.get(Const.PASIEN)
-                .addQueryParameter("id_masyarakat", "1") //Todo chage
+                .addQueryParameter("id_masyarakat", Const.mid()+"")
                 .setTag("Get pasiens")
                 .setPriority(Priority.MEDIUM)
                 .build()

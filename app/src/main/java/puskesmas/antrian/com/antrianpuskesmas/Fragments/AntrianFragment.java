@@ -48,7 +48,7 @@ public class AntrianFragment extends Fragment {
 
     private void loadData() {
         AndroidNetworking.get(Const.ANTRIAN)
-                .addQueryParameter("id_user", "1") // Todo ganti dengan shared preferences
+                .addQueryParameter("id_user", Const.uid()+"")
                 .setPriority(Priority.MEDIUM)
                 .setTag("GET ANTRIAN")
                 .build()
