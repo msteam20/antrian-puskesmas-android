@@ -44,8 +44,11 @@ import puskesmas.antrian.com.antrianpuskesmas.models.Poli;
 
 public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItemClickListener{
     private RecyclerView recyclerView;
+    private List<Poli> poli = Const.loadStateHome();
     private List<Pasien> pasien = new ArrayList<>();
     private PoliRecyclerAdapter adapter;
+    private Bundle saveState;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +60,9 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setRecyclerView();
+
         loadData();
     }
 
@@ -66,7 +72,19 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
         loadPasien();
     }
 
-    private void setRecyclerView (List<Poli> poli){
+    private Bundle saveState() { /* called either from onDestroyView() or onSaveInstanceState() */
+        Bundle state = new Bundle();
+        state.putString("data-home", new Gson().toJson(poli));
+        return state;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        saveState = saveState();
+    }
+
+    private void setRecyclerView (){
         adapter = new PoliRecyclerAdapter(getContext(), poli, this);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
@@ -80,10 +98,14 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
             .getAsString(new StringRequestListener() {
                 @Override
                 public void onResponse(String response) {
-                    List<Poli> poli = new Gson().fromJson(response, new TypeToken<List<Poli>>() {
+                    List<Poli> newPoli = new Gson().fromJson(response, new TypeToken<List<Poli>>() {
                     }.getType());
 
-                    setRecyclerView(poli);
+                    poli.clear();
+                    poli.addAll(newPoli);
+                    adapter.notifyDataSetChanged();
+
+                    Const.storeStateHome(poli);
                 }
 
                 @Override
@@ -97,7 +119,7 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
         // Load data pasien
         AndroidNetworking.get(Const.PASIEN)
                 .setTag("Mendapatkan List Pasien")
-                .addQueryParameter("id_masyarakat", "1")
+                .addQueryParameter("id_masyarakat", Const.mid()+"")
                 .build()
                 .getAsString(new StringRequestListener() {
                     @Override
@@ -191,5 +213,11 @@ public class HomeFragment extends Fragment implements PoliRecyclerAdapter.OnItem
 
         dialog.getWindow().setAttributes(lp);
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putBundle("home-fragment", (saveState != null) ? saveState : saveState());
     }
 }

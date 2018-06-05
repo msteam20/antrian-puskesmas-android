@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.androidnetworking.AndroidNetworking;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.firebase.FirebaseApp;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -16,11 +17,14 @@ import okhttp3.Response;
 
 public class BaseApplication extends Application {
     public static SharedPreferences sharedPreferences;
+    public static BaseApplication instance;
     @Override
     public void onCreate() {
         super.onCreate();
 
         sharedPreferences = getSharedPreferences("setting", MODE_PRIVATE);
+        instance = this;
+
 
         // inisialisasi Okttp untuk networking request Api ke server
         OkHttpClient okHttpClient = null;
@@ -57,5 +61,7 @@ public class BaseApplication extends Application {
         // Set enable logging jika mode debug
         if (BuildConfig.DEBUG)
             AndroidNetworking.enableLogging();
+
+        FirebaseApp.initializeApp(this);
     }
 }

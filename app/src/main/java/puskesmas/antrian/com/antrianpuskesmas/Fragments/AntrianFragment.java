@@ -25,11 +25,14 @@ import puskesmas.antrian.com.antrianpuskesmas.Adapters.AntrianRecyclerAdapter;
 import puskesmas.antrian.com.antrianpuskesmas.R;
 import puskesmas.antrian.com.antrianpuskesmas.etc.Const;
 import puskesmas.antrian.com.antrianpuskesmas.models.Antrian;
+import puskesmas.antrian.com.antrianpuskesmas.models.Poli;
 
 public class AntrianFragment extends Fragment {
     private RecyclerView recyclerView;
-    private List<Object> list;
+    private List<Object> list = new ArrayList<>();
     AntrianRecyclerAdapter adapter;
+
+    private Bundle saveInstance;
 
     @Nullable
     @Override
@@ -43,7 +46,18 @@ public class AntrianFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView();
-        loadData();
+    }
+
+    private Bundle saveState() { /* called either from onDestroyView() or onSaveInstanceState() */
+        Bundle state = new Bundle();
+        state.putString("data-antrian", new Gson().toJson(list));
+        return state;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        saveInstance = saveState();
     }
 
     private void loadData() {
@@ -55,26 +69,11 @@ public class AntrianFragment extends Fragment {
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
+                        list.clear();
                         List<Antrian> antrian = new Gson().fromJson(response, new TypeToken<List<Antrian>>() {
                         }.getType());
-
-                        List<Antrian> inProgress = new ArrayList<>();
-                        List<Antrian> histori = new ArrayList<>();
-
-                        for (Antrian antri : antrian) {
-                            if(antri.in_progress)
-                                inProgress.add(antri);
-                            else
-                                histori.add(antri);
-                        }
-
-                        if (inProgress.size() > 0){
-                            list.add("Dalam Antrian");
-                            list.addAll(inProgress);
-                        }
-
-                        list.add("Histori Antrian");
-                        list.addAll(histori);
+                        separateAntrian(antrian);
+                        Const.storeStateAntrian(antrian);
                         adapter.notifyDataSetChanged();
                     }
 
@@ -86,12 +85,39 @@ public class AntrianFragment extends Fragment {
     }
 
     private void setUpRecyclerView() {
-        list = new ArrayList<>();
+        separateAntrian(Const.loadStateAntrian());
         adapter = new AntrianRecyclerAdapter(getContext(), list);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
+        loadData();
+    }
+
+    void separateAntrian(List<Antrian> antrian){
+        List<Antrian> inProgress = new ArrayList<>();
+        List<Antrian> histori = new ArrayList<>();
+
+        for (Antrian antri : antrian) {
+            if(antri.in_progress)
+                inProgress.add(antri);
+            else
+                histori.add(antri);
+        }
+
+        if (inProgress.size() > 0){
+            list.add("Dalam Antrian");
+            list.addAll(inProgress);
+        }
+
+        list.add("Histori Antrian");
+        list.addAll(histori);
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putBundle("antrian-fragment", (saveInstance != null) ? saveInstance : saveState());
+    }
 }

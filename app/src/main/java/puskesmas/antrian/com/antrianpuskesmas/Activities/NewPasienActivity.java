@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,7 +89,7 @@ public class NewPasienActivity extends AppCompatActivity implements DatePickerDi
                 .addBodyParameter("tempat_lahir", tempat_lahir.getText().toString())
                 .addBodyParameter("no_telp", no_telp.getText().toString())
                 .addBodyParameter("no_askes", no_askes.getText().toString())
-                .addBodyParameter("id_masyarakat", "1")
+                .addBodyParameter("id_masyarakat", Const.mid()+"")
                 .setTag("Kirim pasien")
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -108,6 +109,7 @@ public class NewPasienActivity extends AppCompatActivity implements DatePickerDi
                     @Override
                     public void onError(ANError anError) {
                         Toast.makeText(NewPasienActivity.this, "Terjadi kesalahan. Silahkan diulangi", Toast.LENGTH_SHORT).show();
+                        Log.e("error", anError.getErrorBody());
                         button.setEnabled(true);
                         button.setText("TAMBAH");
                     }

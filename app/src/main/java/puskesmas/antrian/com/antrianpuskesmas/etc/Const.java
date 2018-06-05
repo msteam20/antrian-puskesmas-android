@@ -3,15 +3,21 @@ package puskesmas.antrian.com.antrianpuskesmas.etc;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
 import puskesmas.antrian.com.antrianpuskesmas.BaseApplication;
 import puskesmas.antrian.com.antrianpuskesmas.BuildConfig;
 import puskesmas.antrian.com.antrianpuskesmas.R;
+import puskesmas.antrian.com.antrianpuskesmas.models.Antrian;
 import puskesmas.antrian.com.antrianpuskesmas.models.Pasien;
+import puskesmas.antrian.com.antrianpuskesmas.models.Poli;
 
 /**
  * Semua konstanta disini
@@ -93,6 +99,32 @@ public class Const {
         return BaseApplication.sharedPreferences.getString("email", null);
     }
 
+    public static List<Poli> loadStateHome(){
+        return new Gson().fromJson(BaseApplication.sharedPreferences.getString("home-state", "[]"), new TypeToken<List<Poli>>(){}.getType());
+    }
+
+    public static void storeStateHome(List<Poli> list){
+        BaseApplication.sharedPreferences.edit().putString("home-state", new Gson().toJson(list)).apply();
+    }
+
+    public static List<Antrian> loadStateAntrian(){
+        String antrian = BaseApplication.sharedPreferences.getString("antrian-state", "[]");
+        Log.e("antrian", antrian);
+        return new Gson().fromJson(antrian, new TypeToken<List<Antrian>>(){}.getType());
+    }
+
+    public static void storeStateAntrian(List<Antrian> list){
+        BaseApplication.sharedPreferences.edit().putString("antrian-state", new Gson().toJson(list)).apply();
+    }
+
+    public static List<Pasien> loadStatePasien(){
+        return new Gson().fromJson(BaseApplication.sharedPreferences.getString("pasien-state", "[]"), new TypeToken<List<Pasien>>(){}.getType());
+    }
+
+    public static void storeStatePasien(List<Pasien> list){
+        BaseApplication.sharedPreferences.edit().putString("pasien-state", new Gson().toJson(list)).apply();
+    }
+
     public static void doLogin(int uid, int mid, String nama, String alamat, String username, String no_hp, String email){
         isLogin(true);
         uid(uid);
@@ -113,5 +145,8 @@ public class Const {
         username(null);
         noHp(null);
         email(null);
+        BaseApplication.sharedPreferences.edit().remove("pasien-state").apply();
+        BaseApplication.sharedPreferences.edit().remove("antrian-state").apply();
+        BaseApplication.sharedPreferences.edit().remove("home-state").apply();
     }
 }

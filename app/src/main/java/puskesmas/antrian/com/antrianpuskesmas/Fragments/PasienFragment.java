@@ -36,7 +36,7 @@ import static android.app.Activity.RESULT_OK;
 public class PasienFragment extends Fragment {
     RecyclerView recyclerView;
     FloatingActionButton fab;
-    List<Pasien> pasiens = new ArrayList<>();
+    List<Pasien> pasiens = Const.loadStatePasien();
     PasienRecyclerAdapter adapter;
 
     @Nullable
@@ -82,7 +82,6 @@ public class PasienFragment extends Fragment {
     }
 
     private void loadData() {
-        pasiens.clear();
         AndroidNetworking.get(Const.PASIEN)
                 .addQueryParameter("id_masyarakat", Const.mid()+"")
                 .setTag("Get pasiens")
@@ -91,10 +90,12 @@ public class PasienFragment extends Fragment {
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
+                        pasiens.clear();
                         List<Pasien> newPasien = new Gson().fromJson(response, new TypeToken<List<Pasien>>() {
                         }.getType());
 
                         pasiens.addAll(newPasien);
+                        Const.storeStatePasien(pasiens);
                         adapter.notifyDataSetChanged();
                     }
 
