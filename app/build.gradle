@@ -15,13 +15,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             // Rubah ini sesuai dengan url server api
-            buildConfigField "String", "BASE_URL", "\"http://7c3d87e9.ngrok.io/api/\""
+            buildConfigField "String", "BASE_URL", "\"http://siapta.com/api/\""
             buildConfigField "String", "PUSHER_CLUSTER", "\"ap1\""
             buildConfigField "String", "PUSHER_KEY", "\"8ded9f5f9850e0bf42b4\""
         }
         debug {
             // Rubah ini sesuai dengan url server api
-            buildConfigField "String", "BASE_URL", "\"http://7c3d87e9.ngrok.io/api/\""
+            buildConfigField "String", "BASE_URL", "\"http://siapta.com/api/\""
             buildConfigField "String", "PUSHER_CLUSTER", "\"ap1\""
             buildConfigField "String", "PUSHER_KEY", "\"8ded9f5f9850e0bf42b4\""
         }
